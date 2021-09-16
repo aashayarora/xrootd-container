@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: xrootd-server
+  name: xrootd-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: xrootd-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: xrootd-server
+    spec:
+      tolerations:
+      - key: "nautilus.io/stashcache"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - image: aaarora/xrootd-container:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 1094
+        name: xrootd-server
+        resources:
+          limits:
+            cpu: 4
+            memory: 4Gi
+          requests:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: xrd-certs
+          mountPath: /etc/grid-security/hostcert.pem
+          subPath: hostcert.pem
+        - name: xrd-certs
+          mountPath: /etc/grid-security/hostkey.pem
+          subPath: hostkey.pem
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: xrd-certs
+        secret:
+          secretName: xrd-certs
+          items:
+          - key: hostcert.pem
+            path: hostkey.pem
+          defaultMode: 0644

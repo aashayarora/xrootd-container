@@ -1,0 +1,14 @@
+resources:
+  - deploy.yaml
+
+secretGenerator:
+- name: xrd-certs
+  files:
+    - certs/hostcert.pem
+    - certs/hostkey.pem
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+commonLabels:
+  app: xrootd-server
