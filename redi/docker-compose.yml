@@ -5,7 +5,6 @@ services:
       - "1094:1094"
       - "1213:1213"
     volumes:
-      - /tmp:/rucio:Z
       - ./xrootd.cfg:/etc/xrootd/xrootd.cfg:rw
       - ./supervisord.ctl:/etc/supervisord.d/10-xrootd.conf:rw
       - ./hostcert.pem:/etc/grid-security/hostcert.pem:ro
