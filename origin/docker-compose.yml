@@ -1,0 +1,14 @@
+services:
+  origin:
+    image: jguiang/rucio-sense-xrootd:latest
+    ports:
+      - "1094:1094"
+    volumes:
+      - /tmp:/rucio:Z
+      - ./xrootd.cfg:/etc/xrootd/xrootd.cfg:rw
+      - ./supervisord.ctl:/etc/supervisord.d/10-xrootd.conf:rw
+      - ./hostcert.pem:/etc/grid-security/hostcert.pem:ro
+      - ./hostkey.pem:/etc/grid-security/hostkey.pem:ro
+    environment:
+      - REDI_ADDR=
+      - INTF_NAME=
