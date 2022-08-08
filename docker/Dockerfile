@@ -1,11 +1,14 @@
-FROM centos:centos7
+FROM centos:stream8
 
-RUN yum install -y epel-release.noarch && \
-    yum -y update && \
-    yum install -y xrootd xrootd-client
+RUN yum update -y
+RUN yum -y install vim osg-xrootd-standalone osg-ca-certs
+RUN yum clean all && rm -rf /var/cache/yum/
 
-ADD auth-file-noauth /etc/xrootd/auth-file-noauth
-ADD xrootd.cfg /etc/xrootd/xrootd-tpc.cfg
+COPY auth-file /etc/xrootd/auth-file
+COPY xrootd.cfg /etc/xrootd/xrootd.cfg
+COPY supervisord.conf /etc/
+COPY image-config.d/* /etc/osg/image-config.d/
 
-ADD entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+RUN chmod go-w /etc/supervisord.conf
+
+COPY docker-entrypoint.sh /
