@@ -1,4 +1,4 @@
-FROM centos:stream8
+FROM centos:centos7
 
 RUN yum update -y
 RUN yum -y install vim osg-xrootd-standalone osg-ca-certs
