@@ -1,11 +1,3 @@
 #!/bin/bash
 
-# Allow the derived images to run any additional runtime customizations
-shopt -s nullglob
-for x in /etc/osg/image-init.d/*.sh; do source "$x"; done
-shopt -u nullglob
-
-chmod go-w /etc/cron.*/* 2>/dev/null || :
-
-# Now we can actually start the supervisor
-exec /usr/bin/supervisord -c /etc/supervisord.conf
+xrootd -R xrootd -c /etc/xrootd/xrootd.cfg -l /var/log/xrootd/cmsd.log
