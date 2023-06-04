@@ -7,3 +7,5 @@ RUN yum clean all && rm -rf /var/cache/yum/
 COPY xrootd.cfg /etc/xrootd/xrootd.cfg
 
 COPY docker-entrypoint.sh /
+
+ENTRYPOINT /docker-entrypoint.sh
